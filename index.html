@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<!--JAVASCRIPT-->
+<body>
+    <div class="head"><h1>My To-Do-List</h1></div>
+    <form action="" class="form-control">
+        <fieldset class="color-changer">
+            <legend>Change Theme</legend>
+            <label for="light">Light</label>
+            <input type="radio" name="theme" id="light" checked>
+
+            <label for="blue">Blue</label>
+            <input type="radio" name="theme" id="blue">
+
+            <label for="babyPink">Pink</label>
+            <input type="radio" name="theme" id="babyPink">
+
+            <label for="orange">Orange</label>
+            <input type="radio" name="theme" id="orange">
+
+            <label for="dark">Dark</label>
+            <input type="radio" name="theme" id="dark">
+        </fieldset>
+    </form>
+    <input type="text" id="search" class="form-control" placeholder="Search todo">
+    <div class="container">
+        <input type="text" class="addtext" placeholder="Task...">
+        <button class="addbtn" onclick="addElement()">
+            <img src="plus.jpg" alt="">
+        </button>
+        <div class="list"></div>
+    </div>
+    <script>
+        var elements = [];
+        window.onload = function()
+        {
+            if(JSON.parse(localStorage.getItem("todo-elements"))!=null){
+                    elements = JSON.parse(localStorage.getItem("todo-elements"));
+                    console.log("elements:" + elements);
+                    display();
+                }
+        };
+        function addElement(){
+            if(document.querySelector(".addtext").value.trim()!=""){
+                elements.push(document.querySelector(".addtext").value.trim());
+                if(localStorage.getItem("todo-elements")==null){
+                    localStorage.setItem("todo-elements",JSON.stringify(elements));
+                }
+                else{
+                    localStorage.setItem("todo-elements",JSON.stringify(elements));
+                }
+                console.log(localStorage.getItem("todo-elements"));
+                display();
+            }
+        }
+        function display(){
+            document.querySelector(".list").innerHTML = "";
+            for(var i=0; i<elements.length ;i++)
+            document.querySelector(".list").innerHTML += "<center><div class='element'>"+elements[i]+"<img class='ticks' src='tick.jpg' onclick='strike("+1+")'><img class='bins' src='bin.jpg' onclick='del("+1+")'></div></center>";
+        }
+        function del(index){
+            elements.splice(index, 1);
+            display();
+        }
+        function strike(index){
+            if(elements[index].includes("<strike>"))
+                {
+                    elements[index] = elements[index].replace("<strike>","");
+                    elements[index] = elements[index].replace("</strike>","");
+                }
+                else
+                elements[index] = "<strike>"+ elements[index] + "</strike>";
+                display();
+        };
+    </script>
+</body>
+</html>
